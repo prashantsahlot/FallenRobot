@@ -1,14 +1,13 @@
 import threading
-
-from sqlalchemy import Column, String, UnicodeText, distinct, func
-
+from sqlalchemy import Column, String, UnicodeText, distinct, func, Integer
 from FallenRobot.modules.sql import BASE, SESSION
 
 
 class Disable(BASE):
     __tablename__ = "disabled_commands"
-    chat_id = Column(String(14), primary_key=True)
-    command = Column(UnicodeText, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)  # Added an 'id' column as primary key
+    chat_id = Column(String(14), nullable=False)
+    command = Column(String(255), nullable=False)  # Changed to String(255) to avoid BLOB/TEXT issues
 
     def __init__(self, chat_id, command):
         self.chat_id = chat_id
@@ -19,10 +18,9 @@ class Disable(BASE):
 
 
 Disable.__table__.create(checkfirst=True)
+
 DISABLE_INSERTION_LOCK = threading.RLock()
-
 DISABLED = {}
-
 
 def disable_command(chat_id, disable):
     with DISABLE_INSERTION_LOCK:
