@@ -18,7 +18,7 @@ def start() -> scoped_session:
     """
     # Create SQLAlchemy engine
     try:
-        engine = create_engine(DB_URI, client_encoding="utf8")
+        engine = create_engine(DB_URI)
         log.info("[Database] Connecting to the database...")
         BASE.metadata.bind = engine
         BASE.metadata.create_all(engine)  # Create tables if they don't exist
@@ -35,3 +35,4 @@ try:
 except Exception as db_error:
     log.error("[Database] Unable to initialize the database session. Exiting.")
     exit(1)
+
