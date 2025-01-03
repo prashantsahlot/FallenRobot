@@ -43,3 +43,5 @@ telegraph==2.2.0
 telethon==1.37.0
 tgcrypto==1.2.5
 wikipedia==1.4.0
+Flask==2.3.3
+Flask-RESTful==0.3.9
