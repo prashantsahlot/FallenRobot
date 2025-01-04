@@ -128,13 +128,26 @@ def chatbot(update: Update, context: CallbackContext):
     if message.text and not message.document:
         if not fallen_message(context, message):
             return
+        
         bot.send_chat_action(chat_id, action="typing")
-        request = requests.get(
-            f"https://kora-api.vercel.app/chatbot/2d94e37d-937f-4d28-9196-bd5552cac68b/{BOT_NAME}/Anonymous/message={message.text}"
-        )
-        results = json.loads(request.text)
-        sleep(0.5)
-        message.reply_text(results["reply"])
+        
+        # Playful prompt to guide the chatbot's behavior
+        prompt = f"{message.text}\n\nReply playfully in the same language as the user's message."
+
+        # Sending the request to the new API
+        try:
+            request = requests.get(
+                f"https://darkness.ashlynn.workers.dev/chat/?prompt={requests.utils.quote(prompt)}"
+            )
+            results = json.loads(request.text)
+
+            # Responding with the chatbot's reply
+            sleep(0.5)
+            message.reply_text(results["reply"])
+        except Exception as e:
+            # Handling potential API or network errors
+            message.reply_text("Oops! Something went wrong. Please try again later.")
+
 
 
 __help__ = f"""
