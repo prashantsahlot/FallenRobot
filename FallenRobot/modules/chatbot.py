@@ -143,7 +143,7 @@ def chatbot(update: Update, context: CallbackContext):
 
             # Responding with the chatbot's reply
             sleep(0.5)
-            message.reply_text(results["reply"])
+            message.reply_text(results["response"])
         except Exception as e:
             # Handling potential API or network errors
             message.reply_text("Oops! Something went wrong. Please try again later.")
