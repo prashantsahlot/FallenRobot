@@ -132,7 +132,7 @@ def chatbot(update: Update, context: CallbackContext):
         bot.send_chat_action(chat_id, action="typing")
         
         # Playful prompt to guide the chatbot's behavior
-        prompt = f"{message.text}\n\nReply playfully in the same language as the user's message."
+        prompt = f"{message.text}\n\nReply playfully in the same language as the user's message and use as few words as possible."
 
         # Sending the request to the updated API
         try:
@@ -156,9 +156,8 @@ def chatbot(update: Update, context: CallbackContext):
             print(f"API Error: {e}")
 
 
-
 __help__ = f"""
-*{BOT_NAME} has an chatbot which provides you a seemingless chatting experience :*
+*{BOT_NAME} has an chatbot which provides you a seemingless chatting experience :* 
 
  »  /chatbot *:* Shows chatbot control panel
 """
@@ -187,3 +186,4 @@ __handlers__ = [
     RM_CHAT_HANDLER,
     CHATBOT_HANDLER,
 ]
+
