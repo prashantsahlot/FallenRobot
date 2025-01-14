@@ -134,19 +134,26 @@ def chatbot(update: Update, context: CallbackContext):
         # Playful prompt to guide the chatbot's behavior
         prompt = f"{message.text}\n\nReply playfully in the same language as the user's message."
 
-        # Sending the request to the new API
+        # Sending the request to the updated API
         try:
-            request = requests.get(
-                f"https://darkness.ashlynn.workers.dev/chat/?prompt={requests.utils.quote(prompt)}"
-            )
-            results = json.loads(request.text)
+            api_url = "https://darkness.ashlynn.workers.dev/chat/"
+            payload = {"prompt": prompt}
+            headers = {"Content-Type": "application/json"}
 
-            # Responding with the chatbot's reply
-            sleep(0.5)
-            message.reply_text(results["response"])
-        except Exception as e:
+            response = requests.post(api_url, json=payload, headers=headers, timeout=10)
+            response.raise_for_status()  # Raise an error for HTTP codes >= 400
+
+            results = response.json()
+
+            if results.get("status") == 200 and "response" in results:
+                sleep(0.5)
+                message.reply_text(results["response"])
+            else:
+                message.reply_text("The API returned an unexpected response. Please try again later.")
+        except requests.exceptions.RequestException as e:
             # Handling potential API or network errors
             message.reply_text("Oops! Something went wrong. Please try again later.")
+            print(f"API Error: {e}")
 
 
 
